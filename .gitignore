@@ -1,0 +1,11 @@
+.DS_STORE
+.DS_Store
+*.vim
+*.swn
+*.log
+npm-debug.log.*
+*idea
+node_modules
+package-lock.json
+build
+coverage
