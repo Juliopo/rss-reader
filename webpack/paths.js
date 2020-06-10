@@ -15,5 +15,7 @@ module.exports = {
     actions: path.join(__dirname, '../src/redux/actions'),
     store: path.join(__dirname, '../src/redux/store'),
     helpers: path.join(__dirname, '../src/helpers'),
+    hoc: path.join(__dirname, '../src/hoc'),
+    hooks: path.join(__dirname, '../src/hooks'),
   },
 };

@@ -2,3 +2,21 @@ form {
     width: 100%; // Fix IE 11 issue
     margin-top: 200px;
 }
+
+.itemContainer {
+    margin: 40px 0 40px 0;
+}
+
+.alert {
+    margin-top: 20px;
+}
+
+.rssInput {
+    position: relative;
+}
+
+.rssIcon, .errorIcon, .loadingIcon {
+    position: absolute;
+    top: 30px;
+    right: -30px;
+}
