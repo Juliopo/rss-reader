@@ -1,4 +1,8 @@
-import { isValidRss } from 'helpers/rssValidation';
+import {
+  isValidRss,
+  getRssItemFromDMParser,
+  createInitialPaginatedObject,
+} from 'helpers/rss';
 import { calculateNewPaginatedList } from 'helpers/pagination';
 
 export const VALIDATE_RSS = 'VALIDATE_RSS';
@@ -16,22 +20,10 @@ export const getRSSFromUrl = rssUrl => dispatch => {
     .then(str => new window.DOMParser().parseFromString(str, 'text/xml'))
     .then(data => {
       const items = data.querySelectorAll('item');
-      const stringedItems = Array.from(items).map(el => {
-        return {
-          title: el.querySelector('title').innerHTML,
-          link: el.querySelector('link').innerHTML,
-          description: el.querySelector('description').textContent,
-        };
-      });
-      const perPage = 3;
-      const paginationObject = {
-        list: stringedItems,
-        paginatedList: stringedItems.slice(0, perPage),
-        perPage,
-        totalItems: stringedItems.length,
-        currentPage: 1,
-      };
-      dispatch({ type: GET_RSS_LIST_SUCCESS, rssList: paginationObject });
+      const list = getRssItemFromDMParser(items);
+      const initialPaginatedObject = createInitialPaginatedObject(list);
+
+      dispatch({ type: GET_RSS_LIST_SUCCESS, rssList: initialPaginatedObject });
     })
     .catch(err => {
       let error;
