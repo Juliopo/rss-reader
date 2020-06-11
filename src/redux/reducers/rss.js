@@ -5,10 +5,17 @@ import {
   GET_RSS_LIST,
   GET_RSS_LIST_SUCCESS,
   GET_RSS_LIST_FAIL,
+  PAGINATE_RSS_LIST,
 } from 'actions/rss';
 
 export const defaultState = {
-  list: [],
+  rss: {
+    list: [],
+    paginatedList: [],
+    perPage: 0,
+    totalItems: 0,
+    currentPage: 0,
+  },
   error: null,
   isValidRss: false,
   isLoading: false,
@@ -34,13 +41,13 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         isLoading: false,
-        list: [],
+        rss: defaultState.rss,
         isValidRss: false,
       };
     case GET_RSS_LIST_FAIL:
       return {
         ...state,
-        list: [],
+        rss: defaultState.rss,
         isLoading: false,
         error: action.error,
       };
@@ -48,8 +55,19 @@ export default (state = defaultState, action) => {
       return {
         ...state,
         isLoading: false,
-        list: action.rssList,
+        rss: action.rssList,
         error: null,
+      };
+    case PAGINATE_RSS_LIST:
+      return {
+        ...state,
+        rss: {
+          currentPage: action.page,
+          list: state.rss.list,
+          paginatedList: action.paginatedList,
+          perPage: state.rss.perPage,
+          totalItems: state.rss.totalItems,
+        },
       };
     default:
       return state;

@@ -9,8 +9,9 @@ import Alert from '@material-ui/lab/Alert';
 import Typography from '@material-ui/core/Typography';
 import RssFeedIcon from '@material-ui/icons/RssFeed';
 import ClearRoundedIcon from '@material-ui/icons/ClearRounded';
-import LoopRoundedIcon from '@material-ui/icons/LoopRounded';
-import RssHoc from 'hoc/RssHoc';
+import Pagination from '@material-ui/lab/Pagination';
+import RssHoc, { paginatedShape } from 'hoc/RssHoc';
+import loadingImg from 'public/imgs/loading.gif';
 import useDebounce from 'hooks/useDebounce';
 import classes from './Main.scss';
 
@@ -21,8 +22,10 @@ const Main = ({
   isValidRss,
   isLoading,
   getRSSFromUrl,
-  list,
+  rss,
+  totalPages,
   error,
+  paginateRssList,
 }) => {
   const [rssUrl, setRssUrl] = useState('');
   const debouncedSearchTerm = useDebounce(rssUrl, DEBOUNCE_TIME);
@@ -33,7 +36,9 @@ const Main = ({
 
   const renderIcons = () => {
     if (isLoading) {
-      return <LoopRoundedIcon className={classes.loadingIcon} />;
+      return (
+        <img alt="loading" src={loadingImg} className={classes.loadingIcon} />
+      );
     }
 
     if (isValidRss) {
@@ -41,6 +46,9 @@ const Main = ({
     }
 
     return <ClearRoundedIcon className={classes.errorIcon} />;
+  };
+  const handlePagination = (ev, value) => {
+    paginateRssList(value);
   };
 
   const renderRssList = ls => {
@@ -53,8 +61,11 @@ const Main = ({
         >
           <h2>{item.title}</h2>
           {item.description && (
-            // eslint-disable-next-line react/no-danger
-            <div dangerouslySetInnerHTML={{ __html: item.description }} />
+            <div
+              className={classes.description}
+              // eslint-disable-next-line react/no-danger
+              dangerouslySetInnerHTML={{ __html: item.description }}
+            />
           )}
         </div>
       );
@@ -65,7 +76,7 @@ const Main = ({
     <Container component="main" maxWidth="sm">
       <form className={classes.form} noValidate>
         <Typography component="h1" variant="h5">
-          Check the RSS feed
+          Check the RSS feed ex: https://codepen.io/picks/feed/
         </Typography>
         <div className={classes.rssInput}>
           <TextField
@@ -75,7 +86,7 @@ const Main = ({
             fullWidth
             id="rssFeed"
             label="RSS url"
-            placeholder="Put here your RSS placeholder"
+            placeholder="Insert a RSS feed url"
             name="rssFeed"
             autoComplete="url"
             autoFocus
@@ -95,15 +106,27 @@ const Main = ({
           }}
           disabled={!isValidRss || isLoading}
         >
-          Check RSS
+          GET RSS FEED
         </Button>
         {error && (
           <Alert className={classes.alert} severity="error">
             {error}
           </Alert>
         )}
+        {!isValidRss && (
+          <Alert className={classes.alert} severity="warning">
+            Please insert a valid RSS url
+          </Alert>
+        )}
       </form>
-      <div>{renderRssList(list)}</div>
+      <div>{renderRssList(rss.paginatedList)}</div>
+      {totalPages > 1 && (
+        <Pagination
+          count={totalPages}
+          page={rss.currentPage}
+          onChange={handlePagination}
+        />
+      )}
     </Container>
   );
 };
@@ -111,7 +134,6 @@ const Main = ({
 Main.defaultProps = {
   isValidRss: false,
   isLoading: false,
-  list: [],
   error: null,
 };
 
@@ -120,8 +142,10 @@ Main.propTypes = {
   getRSSFromUrl: PropTypes.func.isRequired,
   isValidRss: PropTypes.bool,
   isLoading: PropTypes.bool,
-  list: PropTypes.arrayOf(PropTypes.string),
+  rss: paginatedShape,
   error: PropTypes.string,
+  totalPages: PropTypes.number.isRequired,
+  paginateRssList: PropTypes.func.isRequired,
 };
 
 export default RssHoc(Main);

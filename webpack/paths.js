@@ -17,5 +17,6 @@ module.exports = {
     helpers: path.join(__dirname, '../src/helpers'),
     hoc: path.join(__dirname, '../src/hoc'),
     hooks: path.join(__dirname, '../src/hooks'),
+    public: path.join(__dirname, '../public'),
   },
 };

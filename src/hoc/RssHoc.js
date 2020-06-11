@@ -3,7 +3,23 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { validateRSS, getRSSFromUrl } from 'actions/rss';
+import { validateRSS, getRSSFromUrl, paginateRssList } from 'actions/rss';
+
+const rssListShape = PropTypes.arrayOf(
+  PropTypes.shape({
+    title: PropTypes.string,
+    link: PropTypes.string,
+    description: PropTypes.string,
+  })
+);
+
+export const paginationShape = PropTypes.shape({
+  list: rssListShape,
+  paginationShape: rssListShape,
+  perPage: PropTypes.number.isRequired,
+  totalItems: PropTypes.number.isRequired,
+  currentPage: PropTypes.number.isRequired,
+});
 
 const RssHoc = Component => {
   const HOC = ({
@@ -11,17 +27,27 @@ const RssHoc = Component => {
     isLoading,
     dispatchedValidateRSS,
     dispatchGetRSSFromUrl,
-    list,
+    dispatchPaginateRssList,
+    rss,
     error,
   }) => {
+    const { totalItems, perPage } = rss;
+    let totalPages = 0;
+
+    if (totalItems && perPage) {
+      totalPages = Math.ceil(totalItems / perPage);
+    }
+
     return (
       <Component
         isValidRss={isValidRss}
         isLoading={isLoading}
         validateRSS={dispatchedValidateRSS}
         getRSSFromUrl={dispatchGetRSSFromUrl}
-        list={list}
+        rss={rss}
         error={error}
+        totalPages={totalPages}
+        paginateRssList={dispatchPaginateRssList}
       />
     );
   };
@@ -29,7 +55,7 @@ const RssHoc = Component => {
   const mapStateToProps = state => ({
     isValidRss: state.rss.isValidRss,
     isLoading: state.rss.isLoading,
-    list: state.rss.list,
+    rss: state.rss.rss,
     error: state.rss.error,
   });
 
@@ -38,17 +64,19 @@ const RssHoc = Component => {
       {
         dispatchedValidateRSS: validateRSS,
         dispatchGetRSSFromUrl: getRSSFromUrl,
+        dispatchPaginateRssList: paginateRssList,
       },
       dispatch
     );
 
-  HOC.defaultProps = { list: [], error: null };
+  HOC.defaultProps = { error: null };
   HOC.propTypes = {
     isValidRss: PropTypes.bool.isRequired,
     dispatchedValidateRSS: PropTypes.func.isRequired,
     dispatchGetRSSFromUrl: PropTypes.func.isRequired,
+    dispatchPaginateRssList: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    list: PropTypes.arrayOf(PropTypes.string),
+    rss: paginationShape,
     error: PropTypes.string,
   };
 

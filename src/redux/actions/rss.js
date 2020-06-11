@@ -4,6 +4,7 @@ export const VALIDATE_RSS_FAIL = 'VALIDATE_RSS_FAIL';
 export const GET_RSS_LIST = 'GET_RSS_LIST';
 export const GET_RSS_LIST_SUCCESS = 'GET_RSS_LIST_SUCCESS';
 export const GET_RSS_LIST_FAIL = 'GET_RSS_LIST_FAIL';
+export const PAGINATE_RSS_LIST = 'PAGINATE_RSS_LIST';
 
 export const getRSSFromUrl = rssUrl => dispatch => {
   dispatch({ type: GET_RSS_LIST });
@@ -16,12 +17,18 @@ export const getRSSFromUrl = rssUrl => dispatch => {
         return {
           title: el.querySelector('title').innerHTML,
           link: el.querySelector('link').innerHTML,
-          pubDate: el.querySelector('link').innerHTML,
           description: el.querySelector('description').textContent,
         };
       });
-
-      dispatch({ type: GET_RSS_LIST_SUCCESS, rssList: stringedItems });
+      const perPage = 3;
+      const paginationObject = {
+        list: stringedItems,
+        paginatedList: stringedItems.slice(0, perPage),
+        perPage,
+        totalItems: stringedItems.length,
+        currentPage: 1,
+      };
+      dispatch({ type: GET_RSS_LIST_SUCCESS, rssList: paginationObject });
     })
     .catch(err => {
       let error;
@@ -52,4 +59,26 @@ export const validateRSS = rssUrl => dispatch => {
     .catch(() => {
       dispatch({ type: VALIDATE_RSS_FAIL });
     });
+};
+
+const calculateArrayPos = (page, perPage) =>
+  (page && (page - 1) * perPage) || 0;
+
+const calculateNewPaginatedList = (rssState, newPage) => {
+  const originalRssList = rssState.list;
+  const newArrayPos = calculateArrayPos(newPage, rssState.perPage);
+  const arrayPosLength = rssState.perPage * newPage;
+
+  return originalRssList.slice(newArrayPos, arrayPosLength);
+};
+
+export const paginateRssList = page => (dispatch, getState) => {
+  const rssState = getState().rss.rss;
+  const paginatedList = calculateNewPaginatedList(rssState, page);
+
+  return dispatch({
+    type: PAGINATE_RSS_LIST,
+    page,
+    paginatedList,
+  });
 };

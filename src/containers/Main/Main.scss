@@ -20,3 +20,17 @@ form {
     top: 30px;
     right: -30px;
 }
+
+.loadingIcon {
+    width: 200px;
+    right: -120px;
+    box-shadow: none;
+}
+
+.description {
+    img {
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
