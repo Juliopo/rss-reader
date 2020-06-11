@@ -1,3 +1,6 @@
+import { isValidRss } from 'helpers/rssValidation';
+import { calculateNewPaginatedList } from 'helpers/pagination';
+
 export const VALIDATE_RSS = 'VALIDATE_RSS';
 export const VALIDATE_RSS_SUCCESS = 'VALIDATE_RSS_SUCCESS';
 export const VALIDATE_RSS_FAIL = 'VALIDATE_RSS_FAIL';
@@ -42,34 +45,23 @@ export const getRSSFromUrl = rssUrl => dispatch => {
 };
 
 export const validateRSS = rssUrl => dispatch => {
-  dispatch({ type: VALIDATE_RSS });
   const validationHost = '/validate-rss';
   const validationUrl = `${validationHost}?url=${rssUrl}&output=soap12`;
-  fetch(validationUrl)
+
+  dispatch({ type: VALIDATE_RSS });
+
+  return fetch(validationUrl)
     .then(response => response.text())
     .then(str => {
-      const parsed = /<m:validity>(.*?)<\/m:validity>/g.exec(str);
-      // eslint-disable-next-line eqeqeq
-      const isValidRss = parsed && parsed.length && parsed[1] == 'true';
-      if (isValidRss) {
-        return dispatch({ type: VALIDATE_RSS_SUCCESS, isValidRss });
+      if (isValidRss(str)) {
+        return dispatch({ type: VALIDATE_RSS_SUCCESS, isValidRss: true });
       }
+
       return dispatch({ type: VALIDATE_RSS_FAIL });
     })
     .catch(() => {
       dispatch({ type: VALIDATE_RSS_FAIL });
     });
-};
-
-const calculateArrayPos = (page, perPage) =>
-  (page && (page - 1) * perPage) || 0;
-
-const calculateNewPaginatedList = (rssState, newPage) => {
-  const originalRssList = rssState.list;
-  const newArrayPos = calculateArrayPos(newPage, rssState.perPage);
-  const arrayPosLength = rssState.perPage * newPage;
-
-  return originalRssList.slice(newArrayPos, arrayPosLength);
 };
 
 export const paginateRssList = page => (dispatch, getState) => {
