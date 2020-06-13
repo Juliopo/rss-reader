@@ -27,7 +27,9 @@
     ],
     "moduleNameMapper": {
       "\\.(css|scss)$": "<rootDir>/__mocks__/styleMock.js",
-      "\\.(jpg|gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js"
+      "\\.(jpg|gif|ttf|eot|svg)$": "<rootDir>/__mocks__/fileMock.js",
+      "^actions(.*)$": "<rootDir>/src/redux/actions$1",
+      "^mocks(.*)$": "<rootDir>__mocks__$1"
     },
     "transform": {
       "^.+\\.(js|jsx)$": "babel-jest",
