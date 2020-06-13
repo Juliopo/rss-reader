@@ -26,11 +26,4 @@ export const listMock = [
     description:
       'Brandon Boyd of Incubus on the surprise of success, the hypnotic and humbling ocean, the first time he heard his voice, why nerves are informative, staying out of the comments section, the process of creating art, Calabasas High School, and so much more.',
   },
-  {
-    title: '129 - Bill Wennington   - 5/13/2020',
-    link:
-      'https://omny.fm/shows/the-jim-rome-podcast/129-bill-wennington-5-13-2020',
-    description:
-      "Bill Wennington on why Mike got emotional in episode 7, Scottie's leadership style when it was his team, why Phil was the perfect coach, what it was like playing with Rodman, if the Bulls could have ripped one more title, and so much more.",
-  },
 ];

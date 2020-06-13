@@ -13,11 +13,12 @@ import Pagination from '@material-ui/lab/Pagination';
 import { paginatedShape } from 'hoc/RssHoc';
 import loadingImg from 'public/imgs/loading.gif';
 import useDebounce from 'hooks/useDebounce';
-import classes from './Main.scss';
+import RssItem from 'components/RssItem';
+import classes from './MainContainer.scss';
 
 const DEBOUNCE_TIME = 300;
 
-const Main = ({
+const MainContainer = ({
   validateRSS,
   isValidRss,
   isLoading,
@@ -52,28 +53,12 @@ const Main = ({
   };
 
   const renderRssList = ls => {
-    return ls.map((item, inc) => {
-      return (
-        <div
-          className={classes.itemContainer}
-          // eslint-disable-next-line react/no-array-index-key
-          key={inc}
-        >
-          <h2>{item.title}</h2>
-          {item.description && (
-            <div
-              className={classes.description}
-              // eslint-disable-next-line react/no-danger
-              dangerouslySetInnerHTML={{ __html: item.description }}
-            />
-          )}
-        </div>
-      );
-    });
+    // eslint-disable-next-line react/no-array-index-key
+    return ls.map((item, inc) => <RssItem key={inc} item={item} />);
   };
 
   return (
-    <Container component="main" maxWidth="sm">
+    <Container maxWidth="sm">
       <form className={classes.form} noValidate>
         <Typography component="h1" variant="h5">
           Check the RSS feed ex: https://codepen.io/picks/feed/
@@ -131,13 +116,13 @@ const Main = ({
   );
 };
 
-Main.defaultProps = {
+MainContainer.defaultProps = {
   isValidRss: false,
   isLoading: false,
   error: null,
 };
 
-Main.propTypes = {
+MainContainer.propTypes = {
   validateRSS: PropTypes.func.isRequired,
   getRSSFromUrl: PropTypes.func.isRequired,
   isValidRss: PropTypes.bool,
@@ -148,4 +133,4 @@ Main.propTypes = {
   paginateRssList: PropTypes.func.isRequired,
 };
 
-export default Main;
+export default MainContainer;

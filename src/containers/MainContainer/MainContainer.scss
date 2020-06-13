@@ -3,10 +3,6 @@ form {
     margin-top: 200px;
 }
 
-.itemContainer {
-    margin: 40px 0 40px 0;
-}
-
 .alert {
     margin-top: 20px;
 }
@@ -25,12 +21,4 @@ form {
     width: 200px;
     right: -120px;
     box-shadow: none;
-}
-
-.description {
-    img {
-        position: relative;
-        left: 50%;
-        transform: translateX(-50%);
-    }
 }

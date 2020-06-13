@@ -15,7 +15,8 @@ export const PAGINATE_RSS_LIST = 'PAGINATE_RSS_LIST';
 
 export const getRSSFromUrl = rssUrl => dispatch => {
   dispatch({ type: GET_RSS_LIST });
-  fetch(rssUrl)
+
+  return fetch(rssUrl)
     .then(response => response.text())
     .then(str => new window.DOMParser().parseFromString(str, 'text/xml'))
     .then(data => {

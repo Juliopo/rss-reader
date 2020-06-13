@@ -18,6 +18,7 @@ import {
   VALIDATE_RSS_FAIL,
   GET_RSS_LIST,
   PAGINATE_RSS_LIST,
+  GET_RSS_LIST_SUCCESS,
   validateRSS,
   getRSSFromUrl,
   paginateRssList,
@@ -32,7 +33,7 @@ describe('Redux Rss actions', () => {
     list: listMock,
     paginatedList: listMock.slice(0, 3),
     perPage: 3,
-    totalItems: 5,
+    totalItems: 4,
     currentPage: 1,
   };
 
@@ -114,10 +115,10 @@ describe('Redux Rss actions', () => {
     const actions = store.getActions();
 
     expect(actions[0]).toEqual({ type: GET_RSS_LIST });
-    // expect(actions[1]).toEqual({
-    //   type: GET_RSS_LIST_SUCCESS,
-    //   rssList,
-    // });
+    expect(actions[1]).toEqual({
+      type: GET_RSS_LIST_SUCCESS,
+      rssList,
+    });
   });
 
   it('Should paginate', async () => {

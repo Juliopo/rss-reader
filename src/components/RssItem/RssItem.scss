@@ -1,0 +1,11 @@
+.itemContainer {
+    margin: 40px 0 40px 0;
+}
+
+.description {
+    img {
+        position: relative;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}

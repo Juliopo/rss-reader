@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import './styles/common.scss';
 
 import store from 'store';
-import Main from 'containers/Main';
+import Main from 'containers/MainContainer';
 
 require('es6-promise').polyfill();
 
