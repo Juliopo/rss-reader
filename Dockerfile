@@ -6,5 +6,5 @@ WORKDIR "/usr/src/build"
 RUN yarn install
 RUN yarn run test-build
 
-EXPOSE 80
+EXPOSE 8080
 RUN yarn start
