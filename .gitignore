@@ -10,3 +10,4 @@ package-lock.json
 build
 coverage
 __snapshots__
+yarn-error.log

@@ -1,5 +1,3 @@
-# MYLIVN task
-
 # Taks 1.
 Please, write your own versions of:
 Array.prototype.map
