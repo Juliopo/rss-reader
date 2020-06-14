@@ -5,10 +5,10 @@ WORKDIR /app
 
 COPY package*.json /app/
 
-RUN rm -rf node_modules && yarn install
+RUN yarn install
 
 COPY . /app
 
-EXPOSE 8080
+EXPOSE 4000
 
-RUN yarn start
+CMD ["yarn", "start"]
