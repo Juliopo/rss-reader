@@ -48,6 +48,7 @@ const MainContainer = ({
 
     return <ClearRoundedIcon className={classes.errorIcon} />;
   };
+
   const handlePagination = (ev, value) => {
     paginateRssList(value);
   };
