@@ -1,10 +1,14 @@
 FROM node:12
 
-COPY . /usr/src/build
-WORKDIR "/usr/src/build"
+RUN mkdir /app
+WORKDIR /app
 
-RUN yarn install
-RUN yarn run test-build
+COPY package*.json /app/
+
+RUN rm -rf node_modules && yarn install
+
+COPY . /app
 
 EXPOSE 8080
+
 RUN yarn start
