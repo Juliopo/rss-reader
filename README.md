@@ -80,14 +80,14 @@ Go to your bash, go to the root of this project and run:
 $ yarn install
 $ yarn start
 ```
-the project will start running and will open the browser in the port 8080.
+the project will start running and will open the browser in the port 4000.
 
 ### Installation via docker-compose.
 Go to your bash, go to the root of this project and run: 
 ```sh
 $ docker-compose up --build
 ```
-This will install the dependencies and run the project in the port 8080, then open the browser in localhost:8080
+This will install the dependencies and run the project in the port 8080, then open the browser in localhost:4000
 
 
 ## About the App
